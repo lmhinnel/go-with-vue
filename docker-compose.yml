@@ -1,0 +1,23 @@
+version: '3'
+services:
+  db:
+    build: ./db
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - PGDATA=/pgdata
+      
+  api:
+    build:
+      context: ./api
+    command: ["go", "run", "/go/src/github.com/kansuke231/go-with-vue/api/main.go"]
+    volumes:
+      - ./api:/go/src/github.com/kansuke231/go-with-vue/api
+    ports:
+      - "8080:8080"
+    links:
+      - db
+
+    

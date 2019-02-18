@@ -1,0 +1,5 @@
+# Spin up the Docker instance for PostgreSQL
+docker run --name some-postgres -e POSTGRES_USER=docker -e POSTGRES_PASSWORD=docker -e POSTGRES_PORT=5432 -d postgres
+
+# Access the DB via psql.
+docker run -it --rm --link some-postgres:postgres postgres psql -h postgres -U docker
