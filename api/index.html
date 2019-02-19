@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+
+    <title> A Go app with Vue.js </title>
+</head>
+<body>
+  
+  <div id="app">
+
+    <section v-if="errored">
+      <p>We're sorry, we're not able to retrieve this information at the moment, please try back later</p>
+    </section>
+
+    <section v-else>
+      <div v-if="loading">Loading...</div>
+
+      <!-- <div
+        v-else
+        v-for="currency in info"
+        class="currency"
+      >
+        {{ currency.description }}:
+        <span class="lighten">
+          <span v-html="currency.symbol"></span>{{ currency.rate_float | currencydecimal }}
+        </span>
+      </div> -->
+      {{info}}
+
+    </section>
+  </div>
+
+
+<script>
+  new Vue({
+  el: '#app',
+  data () {
+    return {
+      info: null,
+      loading: true,
+      errored: false
+    }
+  },
+  filters: {
+    currencydecimal (value) {
+      return value.toFixed(2)
+    }
+  },
+  mounted () {
+    axios
+      //.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+      .get('http://localhost:8080/hello')
+      .then(response => {
+        this.info = response.data
+      })
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => this.loading = false)
+  }
+})
+
+</script>
+
+</body>
+</html>

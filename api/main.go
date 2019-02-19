@@ -7,7 +7,6 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/kansuke231/go-with-vue/api/database"
-	"github.com/kansuke231/go-with-vue/api/models"
 )
 
 func main() {
@@ -21,34 +20,39 @@ func main() {
 		println(err.Error())
 	}
 
-	println("Connected!")
-	test := &models.Test{ID: 13, SomeColumn: "some_value_13"}
+	//test := &models.Test{ID: 13, SomeColumn: "some_value_13"}
 	//db.CreateTable(test)
-	println("db.HasTable(test) --> ", db.HasTable(test))
 	//db.InsertTest(test)
 
 	all := db.GetAll()
 
 	for _, e := range all {
-		println("---------")
 		println(e.ID, e.SomeColumn)
 
 	}
 
-	println("Before defining router")
 	router := mux.NewRouter().StrictSlash(true)
 	router.Methods("GET").Path("/hello").Name("Hello").Handler(http.HandlerFunc(HelloHandler))
-	println("After defining router")
+
+	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		println("Got a request!!!")
+		http.ServeFile(w, r, "./index.html")
+	})
 
 	http.ListenAndServe(":8080", router)
 
-	println("Done.")
 }
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-
+	SetCrossOrigin(w)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode("{this:'ok'}")
+	json.NewEncoder(w).Encode("{\"id\": 13, \"some_column\": \"value\"}")
+}
+
+func SetCrossOrigin(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 }
