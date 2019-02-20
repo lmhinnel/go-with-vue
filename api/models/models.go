@@ -1,6 +1,6 @@
 package models
 
 type Test struct {
-	ID         int
-	SomeColumn string
+	ID         int    `json:"id"`
+	SomeColumn string `json:"some_column"`
 }
