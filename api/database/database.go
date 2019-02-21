@@ -24,20 +24,20 @@ func (db *DB) IsAlive() bool {
 	return true
 }
 
-func (db *DB) CreateTable(test *models.Test) {
+func (db *DB) CreateTable(test *models.NewsArticle) {
 	db.database.AutoMigrate(test)
 }
 
-func (db *DB) HasTable(test *models.Test) bool {
+func (db *DB) HasTable(test *models.NewsArticle) bool {
 	return db.database.HasTable(test)
 }
 
-func (db *DB) InsertTest(test *models.Test) {
+func (db *DB) InsertTest(test *models.NewsArticle) {
 	db.database.Create(test)
 }
 
-func (db *DB) GetAll() []*models.Test {
-	all := []*models.Test{}
+func (db *DB) GetAll() []*models.NewsArticle {
+	all := []*models.NewsArticle{}
 	db.database.Where("true").Find(&all)
 	return all
 }
