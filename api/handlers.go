@@ -2,8 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/kansuke231/go-with-vue/api/database"
 )
 
@@ -20,10 +23,6 @@ func (handler AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func HelloHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 
-	//test := &models.Test{ID: 13, SomeColumn: "some_value_13"}
-	//db.CreateTable(test)
-	//db.InsertTest(test)
-
 	all := db.GetAll()
 
 	for _, e := range all {
@@ -36,7 +35,41 @@ func HelloHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	json.NewEncoder(w).Encode(static_result)
+	json.NewEncoder(w).Encode(all)
+}
+
+func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
+	SetCrossOrigin(w)
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	idInt, err := strconv.Atoi(id)
+
+	if err != nil || idInt < 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode("{\"error:\" \"invalid parameter\"}")
+		return
+	}
+
+	// TODO: implement DB Update.
+	defer r.Body.Close()
+	body, _ := ioutil.ReadAll(r.Body)
+
+	rating, _ := strconv.Atoi(string(body))
+
+	db.UpdateNewsArticle(idInt, rating)
+
+	all := db.GetAll()
+
+	for _, e := range all {
+		println(e.ID, e.SomeColumn, e.Rating)
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	w.WriteHeader(http.StatusOK)
+
+	//json.NewEncoder(w).Encode("")
 }
 
 func SetCrossOrigin(w http.ResponseWriter) {
