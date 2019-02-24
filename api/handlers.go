@@ -25,11 +25,6 @@ func HelloHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 
 	all := db.GetAll()
 
-	for _, e := range all {
-		println(e.ID, e.SomeColumn)
-
-	}
-
 	SetCrossOrigin(w)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
@@ -58,12 +53,6 @@ func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 	rating, _ := strconv.Atoi(string(body))
 
 	db.UpdateNewsArticle(idInt, rating)
-
-	all := db.GetAll()
-
-	for _, e := range all {
-		println(e.ID, e.SomeColumn, e.Rating)
-	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 

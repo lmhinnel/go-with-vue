@@ -12,12 +12,20 @@ services:
   api:
     build:
       context: ./api
-    #command: ["go", "run", "/go/src/github.com/kansuke231/go-with-vue/api/main.go"]
     command: ["/go/bin/api"]
     volumes:
       - ./api:/go/src/github.com/kansuke231/go-with-vue/api
     ports:
       - "8080:8080"
+    links:
+      - db
+  
+  newsfeeder:
+    build:
+      context: ./newsfeeder
+    command: ["/go/bin/newsfeeder"]
+    volumes:
+      - ./newsfeeder:/go/src/github.com/kansuke231/go-with-vue/newsfeeder
     links:
       - db
       

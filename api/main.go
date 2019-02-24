@@ -43,13 +43,12 @@ func main() {
 }
 
 func db_setup() *database.DB {
-
-	log.Println("Making the connection to the PostgreSQL instance.....")
 	db_connection_string := "host=db port=5432 dbname=postgres user=docker password=docker sslmode=disable"
 
 	// Wait for 2 seconds to make sure Postgres instance is running.
 	time.Sleep(2 * time.Second)
 
+	log.Println("Making the connection to the PostgreSQL instance.....")
 	db, err := database.NewDB(db_connection_string)
 
 	if err != nil {
