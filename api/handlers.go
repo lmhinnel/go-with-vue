@@ -21,7 +21,7 @@ func (handler AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handler.H(handler.DB, w, r)
 }
 
-func HelloHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
+func NewsFeedsHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 
 	all := db.GetAll()
 
@@ -34,6 +34,7 @@ func HelloHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
+	println("In UpdateHandler ")
 	SetCrossOrigin(w)
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -46,13 +47,13 @@ func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: implement DB Update.
 	defer r.Body.Close()
 	body, _ := ioutil.ReadAll(r.Body)
 
 	rating, _ := strconv.Atoi(string(body))
-
+	println("Before UpdateNewsArticle ")
 	db.UpdateNewsArticle(idInt, rating)
+	println("After UpdateNewsArticle ")
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 

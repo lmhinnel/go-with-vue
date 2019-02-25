@@ -15,21 +15,13 @@ func main() {
 
 	db := db_setup()
 
-	// test1 := &models.NewsArticle{ID: 13, SomeColumn: "some_value_13", Rating: 5}
-	// println("Creating news_articles table...")
-	// db.CreateTable(test1)
-	// db.InsertTest(test1)
-	//
-	// test2 := &models.NewsArticle{ID: 15, SomeColumn: "some_value_15", Rating: 2}
-	// db.InsertTest(test2)
-
 	router := mux.NewRouter().StrictSlash(true)
 
-	helloHandler := AppHandler{db, HelloHandler}
-	router.Methods("GET").Path("/hello").Name("Hello").Handler(helloHandler)
+	newsFeedsHandler := AppHandler{db, NewsFeedsHandler}
+	router.Methods("GET").Path("/newsfeed").Name("newsfeed").Handler(newsFeedsHandler)
 
 	updateHandler := AppHandler{db, UpdateHandler}
-	router.Methods("PUT").Path("/{id}").Name("Update").Handler(updateHandler)
+	router.Methods("PUT").Path("/newsfeed/{id}").Name("newsfeedUpdate").Handler(updateHandler)
 
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./index.html")

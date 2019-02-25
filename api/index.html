@@ -26,7 +26,8 @@
 
       <div v-else v-for="e in info" class="e">
         ID: {{ e.id }}   
-        
+        Title: {{e.title}}   
+        Link: {{e.link}}   
         Rating: 
         <select v-model="e.rating"  @change="onChange($event, e.id)">
           <option v-for="r in ratings">{{r}}</option>
@@ -53,7 +54,7 @@
   },
   mounted () {
     axios
-      .get('http://localhost:8080/hello')
+      .get('http://localhost:8080/newsfeed')
       .then(response => {
         this.info = response.data
       })
@@ -68,7 +69,7 @@
        console.log(event.target.value, id);
        
        axios.put(
-        "http://localhost:8080/" + id, 
+        "http://localhost:8080/newsfeed/" + id, 
         event.target.value, 
         {headers: {"Content-Type": "text/plain"}}
       )

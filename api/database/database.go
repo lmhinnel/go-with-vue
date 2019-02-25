@@ -37,6 +37,7 @@ func (db *DB) InsertTest(test *models.NewsArticle) {
 }
 
 func (db *DB) UpdateNewsArticle(id int, rating int) {
+	println("In UpdateNewsArticle ", id, rating)
 	article := &models.NewsArticle{ID: id}
 	db.database.Model(article).Update("rating", rating)
 }
