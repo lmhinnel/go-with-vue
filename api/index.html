@@ -25,9 +25,8 @@
       <div v-if="loading">Loading...</div>
 
       <div v-else v-for="e in info" class="e">
-        ID: {{ e.id }}   
-        Title: {{e.title}}   
-        Link: {{e.link}}   
+        ID: {{ e.id }}     
+        <a :href="e.link"> {{e.title}} </a>    
         Rating: 
         <select v-model="e.rating"  @change="onChange($event, e.id)">
           <option v-for="r in ratings">{{r}}</option>

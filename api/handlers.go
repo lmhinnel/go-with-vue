@@ -51,9 +51,7 @@ func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 
 	rating, _ := strconv.Atoi(string(body))
-	println("Before UpdateNewsArticle ")
 	db.UpdateNewsArticle(idInt, rating)
-	println("After UpdateNewsArticle ")
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 

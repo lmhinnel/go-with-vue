@@ -55,15 +55,16 @@ func main() {
 	db.AutoMigrate(&NewsArticle{})
 
 	for _, feed := range feeds {
-		db.Create(feed)
-	}
 
-	// Let's see if they were inserted...
-	all := []*NewsArticle{}
-	db.Where("true").Find(&all)
+		searchFeed := &NewsArticle{}
+		db.Where("title = ?", feed.Title).First(searchFeed)
 
-	for _, feed := range all {
-		println(feed.ID, feed.Title, feed.Rating)
+		// If feed is not in the DB, i.e. new entry.
+		if searchFeed.ID == 0 {
+			// Insert each news feed.
+			db.Create(feed)
+		}
+
 	}
 
 }
