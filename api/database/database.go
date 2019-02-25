@@ -37,7 +37,6 @@ func (db *DB) InsertTest(test *models.NewsArticle) {
 }
 
 func (db *DB) UpdateNewsArticle(id int, rating int) {
-	println("In UpdateNewsArticle ", id, rating)
 	article := &models.NewsArticle{ID: id}
 	db.database.Model(article).Update("rating", rating)
 }
@@ -50,6 +49,6 @@ func (db *DB) GetBestNews() []*models.NewsArticle {
 
 func (db *DB) GetAll() []*models.NewsArticle {
 	all := []*models.NewsArticle{}
-	db.database.Where("true").Find(&all)
+	db.database.Order("id asc").Find(&all)
 	return all
 }
