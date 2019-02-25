@@ -8,7 +8,7 @@ type NewsArticle struct {
 	Rating      int    `json:"rating"` // This property does not exist in the original news feed.
 }
 
-type StaticResult struct {
-	ID         int    `json:"id"`
-	SomeResult string `json:"some_result"`
+type BestNews struct {
+	TopRated []*NewsArticle `json:"top_rated_news"`
+	Created  string         `json:"created_at"`
 }

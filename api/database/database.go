@@ -42,6 +42,12 @@ func (db *DB) UpdateNewsArticle(id int, rating int) {
 	db.database.Model(article).Update("rating", rating)
 }
 
+func (db *DB) GetBestNews() []*models.NewsArticle {
+	best := []*models.NewsArticle{}
+	db.database.Order("rating desc").Limit(5).Find(&best)
+	return best
+}
+
 func (db *DB) GetAll() []*models.NewsArticle {
 	all := []*models.NewsArticle{}
 	db.database.Where("true").Find(&all)

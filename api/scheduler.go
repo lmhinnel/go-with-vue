@@ -1,15 +1,14 @@
 package main
 
 import (
-	"math/rand"
-	"strconv"
 	"time"
 
+	"github.com/kansuke231/go-with-vue/api/database"
 	"github.com/kansuke231/go-with-vue/api/models"
 )
 
 // function schedule spawns a go routine that updates StaticResult every delay specified.
-func schedule(s *models.StaticResult, update func(s *models.StaticResult), delay time.Duration) chan bool {
+func schedule(db *database.DB, bestNews *models.BestNews, update func(db *database.DB, s *models.BestNews), delay time.Duration) chan bool {
 	stop := make(chan bool)
 	go func() {
 		for {
@@ -17,7 +16,7 @@ func schedule(s *models.StaticResult, update func(s *models.StaticResult), delay
 			select {
 			case <-time.After(delay):
 				// Do update here.
-				update(s)
+				update(db, bestNews)
 
 			}
 		}
@@ -26,11 +25,11 @@ func schedule(s *models.StaticResult, update func(s *models.StaticResult), delay
 	return stop
 }
 
-func updateStaticResult(s *models.StaticResult) {
-	s.ID = rand.Int()
-	s.SomeResult = "ThisIsSomeResult" + strconv.Itoa(rand.Int())
+func updateBestNews(db *database.DB, bestNews *models.BestNews) {
+	bestNews.TopRated = db.GetBestNews()
+	bestNews.Created = time.Now().String()
 }
 
-func generateStaticResults() *models.StaticResult {
-	return &models.StaticResult{ID: rand.Int(), SomeResult: "ThisIsSomeResult" + strconv.Itoa(rand.Int())}
+func generateBestNews(db *database.DB) *models.BestNews {
+	return &models.BestNews{TopRated: db.GetBestNews(), Created: time.Now().String()}
 }

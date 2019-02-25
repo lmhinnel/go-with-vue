@@ -7,23 +7,22 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/kansuke231/go-with-vue/api/database"
 )
 
 // Custom handler type so that each handler for an endpoint has DB dependency injection.
 type AppHandler struct {
-	*database.DB
-	H func(*database.DB, http.ResponseWriter, *http.Request)
+	context *Context
+	H       func(*Context, http.ResponseWriter, *http.Request)
 }
 
 func (handler AppHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Updated to pass appContext as a parameter to our handler type.
-	handler.H(handler.DB, w, r)
+	handler.H(handler.context, w, r)
 }
 
-func NewsFeedsHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
+func NewsFeedsHandler(context *Context, w http.ResponseWriter, r *http.Request) {
 
-	all := db.GetAll()
+	all := context.DB.GetAll()
 
 	SetCrossOrigin(w)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
@@ -33,8 +32,17 @@ func NewsFeedsHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(all)
 }
 
-func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
-	println("In UpdateHandler ")
+func BestNewsHandler(context *Context, w http.ResponseWriter, r *http.Request) {
+
+	SetCrossOrigin(w)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(context.BestNews)
+}
+
+func UpdateHandler(context *Context, w http.ResponseWriter, r *http.Request) {
 	SetCrossOrigin(w)
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -51,7 +59,7 @@ func UpdateHandler(db *database.DB, w http.ResponseWriter, r *http.Request) {
 	body, _ := ioutil.ReadAll(r.Body)
 
 	rating, _ := strconv.Atoi(string(body))
-	db.UpdateNewsArticle(idInt, rating)
+	context.DB.UpdateNewsArticle(idInt, rating)
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
