@@ -1,4 +1,4 @@
-version: '3'
+version: '2.1'
 services:
   db:
     build: ./db
@@ -9,8 +9,8 @@ services:
       - POSTGRES_PASSWORD=docker
       - PGDATA=/pgdata
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:5432"]
-        interval: 30s
+        test: ["CMD-SHELL", "pg_isready -U docker"]
+        interval: 1s
         timeout: 10s
         retries: 5
       
@@ -23,7 +23,8 @@ services:
     volumes:
       - ./newsfeeder:/go/src/github.com/kansuke231/go-with-vue/newsfeeder
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     links:
       - db
   
@@ -37,8 +38,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
-      - newsfeeder
+      db:
+        condition: service_healthy
+      newsfeeder:
+        condition: service_started
     links:
       - db 
       

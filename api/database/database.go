@@ -21,14 +21,6 @@ func NewDB(connectionString string) (*DB, error) {
 	return &DB{transdb}, nil
 }
 
-func (db *DB) HasTable(test *models.NewsArticle) bool {
-	return db.database.HasTable(test)
-}
-
-func (db *DB) InsertTest(test *models.NewsArticle) {
-	db.database.Create(test)
-}
-
 func (db *DB) UpdateNewsArticle(id int, rating int) {
 	article := &models.NewsArticle{ID: id}
 	db.database.Model(article).Update("rating", rating)

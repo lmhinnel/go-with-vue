@@ -4,12 +4,6 @@ import "github.com/kansuke231/go-with-vue/api/models"
 
 type MockDB struct{}
 
-func (mockDB *MockDB) HasTable(test *models.NewsArticle) bool {
-	return true
-}
-
-func (mockDB *MockDB) InsertTest(test *models.NewsArticle) {}
-
 func (mockDB *MockDB) UpdateNewsArticle(id int, rating int) {}
 
 func (mockDB *MockDB) GetBestNews() []*models.NewsArticle {

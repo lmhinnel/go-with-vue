@@ -6,7 +6,7 @@ First, we have to create Docker images of components by executing `docker-compos
 
 1. It spins up a PostgreSQL instance container that runs on port `5432`
 2. After the database instance is ready, a small Golang program named newsfeeder gets executed. It fetches RSS feeds from NewYork Times and insert the entries into the database. 
-3. Lastly, a Golang web server gets spun up after the database AND newsfeeder are either ready or finished.
+3. Lastly, a Golang web server gets spun up after the database AND newsfeeder are ready.
 
 ### Main front page
 By accessing to `http://localhost:8080/`, we see a list of news articles that were fetched from NewYork Times RSS feed along with Rating for each article which is implemented for this app.
