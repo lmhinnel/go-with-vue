@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/mmcdole/gofeed"
@@ -43,9 +41,6 @@ func main() {
 		article := &NewsArticle{Title: item.Title, Link: item.Link, Description: item.Description}
 		feeds = append(feeds, article)
 	}
-
-	// Wait for 2 seconds to make sure Postgres instance is running.
-	time.Sleep(2 * time.Second)
 
 	// Inserting the feeds into PostgreSQL
 	db_connection_string := "host=db port=5432 dbname=postgres user=docker password=docker sslmode=disable"

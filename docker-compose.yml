@@ -8,7 +8,24 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - PGDATA=/pgdata
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5432"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
       
+  
+  newsfeeder:
+    build:
+      context: ./newsfeeder
+    command: ["/go/bin/newsfeeder"]
+    volumes:
+      - ./newsfeeder:/go/src/github.com/kansuke231/go-with-vue/newsfeeder
+    depends_on:
+      - db
+    links:
+      - db
+  
   api:
     build:
       context: ./api
@@ -17,15 +34,9 @@ services:
       - ./api:/go/src/github.com/kansuke231/go-with-vue/api
     ports:
       - "8080:8080"
-    links:
+    depends_on:
       - db
-  
-  newsfeeder:
-    build:
-      context: ./newsfeeder
-    command: ["/go/bin/newsfeeder"]
-    volumes:
-      - ./newsfeeder:/go/src/github.com/kansuke231/go-with-vue/newsfeeder
+      - newsfeeder
     links:
       - db
       

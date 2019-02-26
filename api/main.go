@@ -33,7 +33,7 @@ func main() {
 	bestNewsHandler := AppHandler{context, BestNewsHandler}
 	router.Methods("GET").Path("/bestnews").Name("bestnews").Handler(bestNewsHandler)
 
-	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	router.Path("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./index.html")
 	})
 
@@ -46,9 +46,6 @@ func main() {
 
 func db_setup() *database.DB {
 	db_connection_string := "host=db port=5432 dbname=postgres user=docker password=docker sslmode=disable"
-
-	// Wait for 4 seconds to make sure Postgres instance is running and newsfeeder has inserted entries..
-	time.Sleep(4 * time.Second)
 
 	log.Println("Making the connection to the PostgreSQL instance.....")
 	db, err := database.NewDB(db_connection_string)
