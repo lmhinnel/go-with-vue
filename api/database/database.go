@@ -20,13 +20,6 @@ func NewDB(connectionString string) (*DB, error) {
 
 	return &DB{transdb}, nil
 }
-func (db *DB) IsAlive() bool {
-	return true
-}
-
-func (db *DB) CreateTable(test *models.NewsArticle) {
-	db.database.AutoMigrate(test)
-}
 
 func (db *DB) HasTable(test *models.NewsArticle) bool {
 	return db.database.HasTable(test)

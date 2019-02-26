@@ -7,4 +7,5 @@ COPY . /go/src/github.com/kansuke231/go-with-vue/api
 WORKDIR /go/src/github.com/kansuke231/go-with-vue/api
 
 RUN go get ./
+RUN go test
 RUN go install

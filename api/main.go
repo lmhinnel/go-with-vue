@@ -11,7 +11,7 @@ import (
 )
 
 type Context struct {
-	DB       *database.DB
+	DB       database.Database
 	BestNews *models.BestNews
 }
 
