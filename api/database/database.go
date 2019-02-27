@@ -28,7 +28,7 @@ func (db *DB) UpdateNewsArticle(id int, rating int) {
 
 func (db *DB) GetBestNews() []*models.NewsArticle {
 	best := []*models.NewsArticle{}
-	db.database.Order("rating desc").Limit(5).Find(&best)
+	db.database.Order("rating desc").Where("rating > 0").Limit(5).Find(&best)
 	return best
 }
 

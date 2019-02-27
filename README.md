@@ -12,7 +12,7 @@ First, we have to create Docker images of components by executing `docker-compos
 By accessing to `http://localhost:8080/`, we see a list of news articles that were fetched from NewYork Times RSS feed along with Rating for each article which is implemented for this app.
 
 ### Top 5 best rated articles
-By accessing to `http://localhost:8080/bestnews`, we see a JSON object that contains an array of the five best rated news articles. This object is updated every 5 minutes, so accessing the endpoint does not make the back-end hit the database, therefore reducing the database load.
+By accessing to `http://localhost:8080/bestnews`, we see a JSON object that contains an array of the five best rated news articles. This object is updated every 5 minutes, so accessing the endpoint does not make the back-end hit the database, therefore reducing the database load. Initially, all of the articles are not rated, therefore we see an empty array for the first 5 minutes.
 
 # Architectural Decision
 One of the common design problems when developing a web application with Golang is how to manage a database connection such that the application runs efficiently and is unit-testable. In order to solve these issues, we use a context object  and Golang's `interface` feature for our database type.
