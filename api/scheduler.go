@@ -7,7 +7,7 @@ import (
 	"github.com/kansuke231/go-with-vue/api/models"
 )
 
-// function schedule spawns a go routine that updates BestNews every delay specified.
+// schedule spawns a go routine that updates BestNews every delay specified.
 func schedule(db *database.DB, bestNews *models.BestNews, update func(db *database.DB, s *models.BestNews), delay time.Duration) {
 	go func() {
 		for {

@@ -65,7 +65,6 @@ func UpdateHandler(context *Context, w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	//json.NewEncoder(w).Encode("")
 }
 
 func SetCrossOrigin(w http.ResponseWriter) {
