@@ -1,4 +1,4 @@
-version: '2.1'
+version: "2.1"
 services:
   db:
     build: ./db
@@ -9,12 +9,13 @@ services:
       - POSTGRES_PASSWORD=docker
       - PGDATA=/pgdata
     healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U docker"]
-        interval: 1s
-        timeout: 10s
-        retries: 5
-      
-  
+      test: ["CMD-SHELL", "pg_isready -U docker"]
+      interval: 1s
+      timeout: 10s
+      retries: 5
+    networks:
+      - go-with-vue
+
   # newsfeeder waits for PostgreSQL server to be ready
   newsfeeder:
     build:
@@ -27,7 +28,9 @@ services:
         condition: service_healthy
     links:
       - db
-  
+    networks:
+      - go-with-vue
+
   # api waits for PostgreSQL server AND newsfeeder to be ready
   api:
     build:
@@ -43,7 +46,10 @@ services:
       newsfeeder:
         condition: service_started
     links:
-      - db 
-      
+      - db
+    networks:
+      - go-with-vue
 
-    
+networks:
+  go-with-vue:
+    driver: bridge
